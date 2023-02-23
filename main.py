@@ -3,11 +3,13 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
+import logging
 import pygame
 import sys
 from actionHandler import actionHandler
 from player import player
 
+logging.basicConfig(filename='game.log', level=logging.INFO)
 def main():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
@@ -32,17 +34,20 @@ def main():
     #Game Loop
     while True:
         #test movement
-        action_list = handler.handle_actions()
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                print("Key pressed has been pressed")
                 if event.key == pygame.K_RETURN:
+                    action_list = handler.handle_actions()
                     handler.process_actions(action_list)
-                    print("M has been pressed")
+                    handler.clear_action_lists()
+                    playerOne.regen_bots()
+                    playerTwo.regen_bots()
+                    logging.info(f"End of Turn")
 
         screen.fill((255, 255, 255))
         for update_bot in playerOne.get_bots():
