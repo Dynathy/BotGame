@@ -6,6 +6,7 @@ class Pilot:
     def __init__(self, name):
         self.name = name
         self.bots = []
+        self.color = (0, 0, 0) #default black
 
     def set_game(self, game):
         self.game = game
@@ -24,6 +25,7 @@ class AiPilot:
     def __init__(self, name):
         self.name = name
         self.bots = []
+        self.color = (0, 0, 0)  # default black
     def handle_input(self):
         # AI Pilots don't need to handle input
         pass
