@@ -26,3 +26,7 @@ class Game:
     def render(self):
         #TODO: Implement Render Logic
         pass
+
+    def quit(self):
+        #TODO: Implement Quit
+        pass

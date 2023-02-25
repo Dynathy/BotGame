@@ -61,7 +61,7 @@ def main():
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                #game.quit()
+                game.quit()
 
         # Handle computer player input
         ai_pilot1.move()
