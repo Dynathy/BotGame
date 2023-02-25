@@ -1,4 +1,4 @@
-class action:
+class Action:
     def __init__(self, bot, position, priority):
         self.bot = bot
         self.position = position
@@ -6,7 +6,7 @@ class action:
 
     def execute(self):
         pass
-class moveAction(action):
+class moveAction(Action):
     def __init__(self, bot, position, priority, direction):
         super().__init__(bot, position, priority)
         self.direction = direction
@@ -14,7 +14,7 @@ class moveAction(action):
     def execute(self):
         self.bot.move(self.direction)
 
-class attackAction(action):
+class attackAction(Action):
     def __init__(self, bot, position, priority, target, weapon):
         super().__init__(bot, position, priority)
         self.target = target

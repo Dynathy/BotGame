@@ -5,59 +5,76 @@
 
 import logging
 import pygame
-import sys
-from actionHandler import actionHandler
-from player import player
+from Weapon import Weapon
+from Upgrades import Upgrades
+from Bot import Bot
+from Pilot import AiPilot
+from Game import Game
+
+# Define constants
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
+GAME_TITLE = "Robot Battle Game"
+
 
 logging.basicConfig(filename='game.log', level=logging.INFO)
+
+
+def setup_bots():
+    # Create the bots
+    bot1 = Bot("Bot1", 100, 10, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
+    bot2 = Bot("Bot2", 100, 10, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
+
+    # Return the bots
+    return [bot1, bot2]
 def main():
+    # Initialize pygame
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
-    pygame.display.set_caption("Mech Battle Simulator")
 
-    #initiate players
-    playerOne = player("playerOne")
-    playerOne.create_bot()
-    playerTwo = player("playerTwo")
-    playerTwo.create_bot()
-    #set up bots
-    for starting_bot in playerOne.get_bots():
-        starting_bot.setup(20, 300)
+    # Create the game object
+    game = Game()
 
-    for starting_bot in playerTwo.get_bots():
-        starting_bot.setup(780, 300)
+    # Set up some players
+    ai_pilot1 = AiPilot("AI Pilot 1")
+    ai_pilot2 = AiPilot("AI Pilot 2")
 
-    #setup action handler
-    player_list = [playerOne, playerTwo]
-    handler = actionHandler(player_list)
+    # Set up some bots
+    bots = setup_bots()
 
-    #Game Loop
-    while True:
-        #test movement
+    # Assign bots to players
+    ai_pilot1.add_bot(bots[0])
+    ai_pilot2.add_bot(bots[1])
 
+    # Add players to the game
+    game.add_pilot(ai_pilot1)
+    game.add_pilot(ai_pilot2)
 
+    # Set Up some bots in the Game
+    game.setup_bots(bots)
+
+    #make some visuals
+    game_display = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    pygame.display.set_caption(GAME_TITLE)
+
+    # Main game loop
+    while not game.game_over():
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    action_list = handler.handle_actions()
-                    handler.process_actions(action_list)
-                    handler.clear_action_lists()
-                    playerOne.regen_bots()
-                    playerTwo.regen_bots()
-                    logging.info(f"End of Turn")
+                #game.quit()
 
-        screen.fill((255, 255, 255))
-        for update_bot in playerOne.get_bots():
-            pygame.draw.circle(screen, (0, 0, 255), (update_bot.pos_x, update_bot.pos_y), 10)
+        # Handle computer player input
+        ai_pilot1.move()
+        ai_pilot2.move()
 
-        for update_bot in playerTwo.get_bots():
-            pygame.draw.circle(screen, (255, 0, 0), (update_bot.pos_x, update_bot.pos_y), 10)
+        # Update the game state
+        game.update()
 
-        pygame.display.update()
+        # Render the game
+        game.render()
 
+    # Quit pygame
+    pygame.quit()
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
