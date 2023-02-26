@@ -1,4 +1,6 @@
 import logging
+import math
+import random
 class Bot:
     def __init__(self, name, point_value, max_ap, ap_regen, max_hp, speed, accuracy, evasion, defense, armor, shielding, weapons, upgrades):
         self.name = name
@@ -52,8 +54,25 @@ class Bot:
         return self.pilot
     def update(self):
         self.logger.warning(f"The Update method is not implemented")
+
     def move(self, direction):
-        self.logger.warning(f"The MOVE action is not implemented")
+        # Determine angle to move in based on the cardinal direction
+        angle_map = {"N": 0, "NE": 45, "E": 90, "SE": 135, "S": 180, "SW": 225, "W": 270, "NW": 315}
+        angle = angle_map[direction]
+
+        # Get the wiggle room from the BotAI
+        #bot_ai = self.get_pilot().BotAI
+        #wiggle_room = bot_ai.get_wiggle_room()
+        wiggle_room = random.randint(1, 10)
+
+        # Modify the angle by the wiggle room and move the bot
+        angle += wiggle_room
+        radians = math.radians(angle)
+        x_delta = self.speed * math.cos(radians)
+        y_delta = self.speed * math.sin(radians)
+        self.pos_x += x_delta
+        self.pos_y += y_delta
+        self.logger.info(f"Moved {direction} with wiggle room of {wiggle_room}")
     def attack(self, target, weapon):
         self.logger.warning(f"The ATTACK action is not implemented")
     def defend(self):

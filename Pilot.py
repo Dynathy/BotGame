@@ -1,4 +1,5 @@
 import random
+import logging
 from BotAI import BotAI
 from Action import Action
 from Action import MoveAction
@@ -16,11 +17,15 @@ class Pilot:
         self.bots.append(bot)
         bot.pilot = self
     def get_action_list(self):
+        logging.info("Retrieving action list...")
         actions = []
         for bot in self.bots:
+            logging.info("Bot: {} has started getting available actions".format(bot.name))
             action_list = bot.get_actions()
-            selected_actions = self.choose_actions(self.game, bot, action_list)
-            actions.extend(selected_actions)
+            logging.info("Bot: {} has gotten available actions".format(bot.name))
+            logging.info("Bot: {} is choosing actions".format(bot.name))
+            actions.extend(self.choose_actions(self.game, bot, action_list))
+            logging.info("Bot: {} has chosen actions".format(bot.name))
 
         return actions
     def handle_input(self):
@@ -36,7 +41,7 @@ class AiPilot(Pilot):
         self.name = name
         self.bots = []
         self.color = (0, 0, 0)  # default black
-        self.bot_ai = BotAI("Brain")
+        self.bot_ai = BotAI(name)
     def handle_input(self):
         # AI Pilots don't need to handle input
         pass
@@ -44,7 +49,9 @@ class AiPilot(Pilot):
         self.bots.append(bot)
         bot.pilot = self
     def choose_actions(self, game, bot, action_list):
+        logging.info("Bot: {} AI is deciding actions...".format(bot.name))
         selected_actions = self.bot_ai.choose_actions(game, bot, action_list)
+        logging.info("Bot: {} AI has decided actions.".format(bot.name))
         return selected_actions
 
     def update(self):

@@ -15,7 +15,7 @@ class BotAI:
         self.name = name
 
     def choose_actions(self, game, bot, action_list):
-        logging.info("Bot {} is choosing actions".format(self.name))
+        logging.info("Bot {} AI is at choose_actions".format(self.name))
         selected_actions = []
         ap = bot.ap
         ap_to_use = random.randint(1, ap)
@@ -51,14 +51,13 @@ class BotAI:
         return action
 
     def add_move_action_details(self, bot, action_name, position):
-        direction = random.choice(["north", "east", "south", "west"])
+        direction = random.choice(["N", "NE", "E", "SE", "S", "SW", "W", "NW"])
         action_class = ACTION_CLASSES[action_name]
         action = action_class(bot, position, 1, direction)
         return action
     def add_attack_action_details(self, game, bot, action_name, position):
         # Here, you could use the bot's intelligence to determine the best target and weapon to use
         target = random.choice(game.bots)
-        logging.info("Bot weapons is {}".format(bot.weapons))
         weapon = random.choice(bot.weapons)
         action_class = ACTION_CLASSES[action_name]
         action = action_class(bot, position, 1, target, weapon)

@@ -10,7 +10,7 @@ class Renderer:
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.background_color = (255, 255, 255)  # white
 
-    def render(self, game):
+    def render(self):
         self.screen.fill(self.background_color)
 
         for bot in self.game.bots:

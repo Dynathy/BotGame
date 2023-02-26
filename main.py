@@ -24,11 +24,11 @@ logging.basicConfig(filename='game.log', level=logging.INFO)
 def setup_bots():
     # Create the bots
     logging.info("Creating Bot 1")
-    bot1 = Bot("Bot1", 100, 10, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
+    bot1 = Bot("Bot1", 100, 3, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
     logging.info("Bot 1 Created!")
 
     logging.info("Creating Bot 2")
-    bot2 = Bot("Bot2", 100, 10, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
+    bot2 = Bot("Bot2", 100, 3, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
     logging.info("Bot 2 Created!")
 
     logging.info("Placing Bot 1")
@@ -56,8 +56,9 @@ def main():
     # Set up some players
     logging.info("Creating Player 1...")
     ai_pilot1 = AiPilot("AI Pilot 1")
-    ai_pilot1.color = (255, 0, 0) #red
+    ai_pilot1.color = (255, 0, 0) # red
     logging.info("Player 1 created!")
+
     logging.info("Creating Player 2...")
     ai_pilot2 = AiPilot("AI Pilot 2")
     ai_pilot2.color = (0, 0, 255)  # red
@@ -76,8 +77,8 @@ def main():
 
     # Add players to the game
     logging.info("Adding players to game...")
-    game.add_pilot(ai_pilot1)
-    game.add_pilot(ai_pilot2)
+    #game.add_pilot(ai_pilot1)
+    #game.add_pilot(ai_pilot2)
     logging.info("Players Added!")
 
     # Set Up some bots in the Game
@@ -108,10 +109,10 @@ def main():
             game.update()
 
             # Render the game
-            renderer.render(game)
+            renderer.render()
 
-         # Limit frame rate to 60 FPS
-        clock.tick(1)
+         # Limit frame rate to X FPS
+        clock.tick(15)
 
     # Quit pygame
     logging.info("Exiting Pygame...")
