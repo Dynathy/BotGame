@@ -23,63 +23,101 @@ logging.basicConfig(filename='game.log', level=logging.INFO)
 
 def setup_bots():
     # Create the bots
+    logging.info("Creating Bot 1")
     bot1 = Bot("Bot1", 100, 10, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
-    bot2 = Bot("Bot2", 100, 10, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
+    logging.info("Bot 1 Created!")
 
+    logging.info("Creating Bot 2")
+    bot2 = Bot("Bot2", 100, 10, 1, 50, 5, 75, 10, 5, 10, 0, Weapon("laser"), Upgrades("Shield"))
+    logging.info("Bot 2 Created!")
+
+    logging.info("Placing Bot 1")
     bot1.pos_x = 30
     bot1.pos_y = 300
+    logging.info("Bot 1 placed!")
 
+    logging.info("Placing Bot 2")
     bot2.pos_x = 770
     bot2.pos_y = 300
+    logging.info("Bot 2 placed!")
     # Return the bots
     return [bot1, bot2]
 def main():
     # Initialize pygame
+    logging.info("Initializing Pygame...")
     pygame.init()
+    logging.info("Pygame Initialized!")
 
     # Create the game object
+    logging.info("Initializing Game...")
     game = Game()
+    logging.info("Game Object Created!")
 
     # Set up some players
+    logging.info("Creating Player 1...")
     ai_pilot1 = AiPilot("AI Pilot 1")
     ai_pilot1.color = (255, 0, 0) #red
+    logging.info("Player 1 created!")
+    logging.info("Creating Player 2...")
     ai_pilot2 = AiPilot("AI Pilot 2")
     ai_pilot2.color = (0, 0, 255)  # red
+    logging.info("Player 2 created!")
+
     # Set up some bots
+    logging.info("Setting up Bots...")
     bots = setup_bots()
+    logging.info("Bots set up!")
 
     # Assign bots to players
+    logging.info("Assigning bots to players...")
     ai_pilot1.add_bot(bots[0])
     ai_pilot2.add_bot(bots[1])
+    logging.info("Bots Assigned!")
 
     # Add players to the game
+    logging.info("Adding players to game...")
     game.add_pilot(ai_pilot1)
     game.add_pilot(ai_pilot2)
+    logging.info("Players Added!")
 
     # Set Up some bots in the Game
+    logging.info("Placing Bots on the battlefield...")
     game.setup_bots(bots)
+    logging.info("Bots placed on battlefield!")
 
     #make some visuals
+    logging.info("Opening Battle feed...")
     renderer = Renderer(game, pygame)
+    clock = pygame.time.Clock()
+    logging.info("Battle feed Online!")
+
     # Main game loop
     while not game.game_over():
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                logging.info("Closing Battle Simulator...")
                 game.finished = True
+                logging.info("Battle Simulator Closed!")
 
-        # Handle computer/player input
-        ai_pilot1.move()
-        ai_pilot2.move()
+        if not game.finished:
+            # Handle computer/player action
+            game.handle_pilot_actions()
 
-        # Update the game state
-        game.update()
+            # Update the game state
+            game.update()
 
-        # Render the game
-        renderer.render(game)
+            # Render the game
+            renderer.render(game)
+
+         # Limit frame rate to 60 FPS
+        clock.tick(1)
 
     # Quit pygame
+    logging.info("Exiting Pygame...")
     pygame.quit()
+    logging.info("Exited Pygame!")
+    logging.info("Good Bye!")
     sys.exit()
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
