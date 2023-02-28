@@ -40,10 +40,14 @@ class Game:
 
     def next_turn(self):
         self.turn_counter += 1
-    def game_over(self):
-        return self.finished
+        logging.info(f"Turn {self.turn_counter} started.")
+        for bot in self.bots:
+            bot.decrement_status_effects()
+
     def update(self):
         for bot in self.bots:
             bot.update()
         for player in self.pilots:
             player.update()
+    def game_over(self):
+        return self.finished

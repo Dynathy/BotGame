@@ -5,6 +5,7 @@
 import sys
 import logging
 import pygame
+import time
 from Weapon import Weapon
 from Upgrades import Upgrades
 from Bot import Bot
@@ -16,7 +17,7 @@ from Renderer import Renderer
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 GAME_TITLE = "Robot Battle Game"
-
+MAX_HANDLE_PILOT_ACTIONS_FREQ = 1.0 # in seconds
 
 logging.basicConfig(filename='game.log', level=logging.INFO)
 
@@ -93,6 +94,7 @@ def main():
     logging.info("Battle feed Online!")
 
     # Main game loop
+    last_handle_pilot_actions_time = time.time()
     while not game.game_over():
         # Handle events
         for event in pygame.event.get():
@@ -100,19 +102,27 @@ def main():
                 logging.info("Closing Battle Simulator...")
                 game.finished = True
                 logging.info("Battle Simulator Closed!")
+        clock.tick(60)
+
 
         if not game.finished:
-            # Handle computer/player action
-            game.handle_pilot_actions()
+            # limit the frequency of handle_pilot_actions
+            current_time = time.time()
+            if current_time - last_handle_pilot_actions_time >= MAX_HANDLE_PILOT_ACTIONS_FREQ:
+                last_handle_pilot_actions_time = current_time
+                # Handle computer/player action
+                game.handle_pilot_actions()
 
-            # Update the game state
-            game.update()
+                # Update the game state
+                game.update()
 
-            # Render the game
-            renderer.render()
+                # Progress the Turn
+                game.next_turn()
+
+        # Render the game
+        renderer.render()
 
          # Limit frame rate to X FPS
-        clock.tick(15)
 
     # Quit pygame
     logging.info("Exiting Pygame...")

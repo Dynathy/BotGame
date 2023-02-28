@@ -1,8 +1,6 @@
-import random
 import logging
 from BotAI import BotAI
-from Action import Action
-from Action import MoveAction
+
 
 class Pilot:
     def __init__(self, name):

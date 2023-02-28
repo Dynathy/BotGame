@@ -45,6 +45,10 @@ class BotAI:
         logging.info("Bot {} has {} AP left after choosing actions".format(self.name, ap))
         return selected_actions
 
+    def get_wiggle_room(self):
+        wiggle_room = random.randint(1, 10)
+        return wiggle_room
+
     def add_defend_action_details(self, bot, action_name, position):
         action_class = ACTION_CLASSES[action_name]
         action = action_class(bot, position, 1)
